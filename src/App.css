@@ -149,6 +149,7 @@ button:active {
 
 .book-title {
   margin-top: 10px;
+  font-style: italic;
 }
 
 .book-authors {
