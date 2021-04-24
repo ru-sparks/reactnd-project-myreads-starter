@@ -1,4 +1,6 @@
 import React from "react";
+import BookShelfChanger from "./BookShelfChanger";
+import { getTitle } from "./getTitle";
 
 const BookShelf = (props) => {
   let page = [];
@@ -17,17 +19,7 @@ const BookShelf = (props) => {
                   `url(${book.url})`,
               }}
             />
-            <div className="book-shelf-changer">
-              <select>
-                <option value="move" disabled>
-                  Move to...
-                </option>
-                <option value="currentlyReading">Currently Reading</option>
-                <option value="wantToRead">Want to Read</option>
-                <option value="read">Read</option>
-                <option value="none">None</option>
-              </select>
-            </div>
+            <BookShelfChanger key={book.url} bookId={book.url} category={props.category} onChange={props.onChange}></BookShelfChanger>
           </div>
           <div className="book-title">{book.title}</div>
           <div className="book-authors">{book.authors}</div>
@@ -44,7 +36,7 @@ const BookShelf = (props) => {
   return (
     <div>
       <div className="bookshelf">
-        <h2 className="bookshelf-title">{props.category}</h2>
+        <h2 className="bookshelf-title">{getTitle(props.category)}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
               {page}

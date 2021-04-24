@@ -1,8 +1,8 @@
 const bookShelfCategories = [
-  "Currently Reading",
-  "Want to Read",
-  "Read",
-  "None"
+  "currentlyReading",
+  "wantToRead",
+  "read",
+  "none",
 ];
 
 export default bookShelfCategories;
