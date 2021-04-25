@@ -8,7 +8,10 @@ const BooksApp = () => (
   <div className="app">
     <Switch>
       <Route path="/search" component={Search} />
-      <Route path="/" component={ListBooks} />
+      <Route
+        path="/"
+        render={(props) => <ListBooks {...props} showSearchLink={true} />}
+      />
     </Switch>
   </div>
 );
