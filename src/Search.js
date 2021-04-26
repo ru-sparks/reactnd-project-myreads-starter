@@ -9,7 +9,8 @@ import ListBooks from "./ListBooks";
 class Search extends React.Component {
   state = {
     term: "",
-    books: [],
+    serverBooks: [],
+    books: []
   };
 
   componentDidMount() {
@@ -22,7 +23,7 @@ class Search extends React.Component {
     });
   }
 
-  handleChangeInBookShelf = (event) => {
+  handleAssignmentToMyReads = (event) => {
     let updateBooks = cloneDeep(this.state.books);
 
     let book = updateBooks.find((book) => book.id === event.target.id);
@@ -30,7 +31,6 @@ class Search extends React.Component {
       book.shelf = event.target.value;
       update(book, event.target.value).then((books) => {
         getAll().then((serverBooks) => {
-          console.log('serverBooks', serverBooks);
           this.setState({
             books: updateBooks,
             serverBooks: serverBooks,
@@ -39,6 +39,20 @@ class Search extends React.Component {
       });
     }
   };
+
+  handleShelfChange = (event) => {
+    let updateBooks = cloneDeep(this.state.serverBooks);
+
+    let book = updateBooks.find((book) => book.id === event.target.id);
+    if (book !== undefined) {
+      book.shelf = event.target.value;
+      update(book, book.shelf);
+      this.setState({
+        serverBooks: updateBooks,
+      });
+    }
+  };
+
 
   updateQuery = (newTerm) => {
     if (newTerm) {
@@ -82,7 +96,6 @@ class Search extends React.Component {
   };
 
   render() {
-    console.log('about to render with server books', this.state.serverBooks);
     return (
       <>
         <div className="search-books">
@@ -112,12 +125,16 @@ class Search extends React.Component {
               key={0}
               category={bookShelfCategories[3]}
               books={this.state.books}
-              onChange={this.handleChangeInBookShelf}
+              onChange={this.handleAssignmentToMyReads}
               showShelfChanger={false}
             />
           </div>
         </div>
-        <ListBooks showSearchLink={false} books={this.state.serverBooks} />
+        <ListBooks
+          showSearchLink={false}
+          books={this.state.serverBooks}
+          onChange={this.handleShelfChange}
+        />
       </>
     );
   }
