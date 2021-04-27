@@ -8,9 +8,15 @@ const BookShelf = (props) => {
     .filter(
       (book, arrayIndex) =>
         book.shelf === props.category ||
-        (book.shelf === undefined && props.category === "none")
+        props.category === 'none'
     )
     .forEach((book, index) => {
+      let thumbnail;
+      if (book.imageLinks === undefined || book.imageLinks.smallThumbnail  === undefined) {
+        thumbnail = "https://upload.wikimedia.org/wikipedia/commons/f/f0/Paperback-stack.png"
+      } else {
+        thumbnail = book.imageLinks.smallThumbnail;
+      }
       page.push(
         <li key={index}>
           <div className="book">
@@ -20,7 +26,7 @@ const BookShelf = (props) => {
                 style={{
                   width: 128,
                   height: 193,
-                  backgroundImage: `url(${book.imageLinks.smallThumbnail})`,
+                  backgroundImage: `url(${thumbnail})`,
                 }}
               />
               <BookShelfChanger

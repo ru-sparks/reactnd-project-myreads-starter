@@ -4,13 +4,12 @@ import { search, update, getAll } from "./BooksAPI";
 import bookShelfCategories from "./bookShelfCategories";
 import BookShelf from "./BookShelf";
 import cloneDeep from "lodash/cloneDeep";
-import ListBooks from "./ListBooks";
 
 class Search extends React.Component {
   state = {
     term: "",
     serverBooks: [],
-    books: []
+    books: [],
   };
 
   componentDidMount() {
@@ -53,26 +52,11 @@ class Search extends React.Component {
     }
   };
 
-
   updateQuery = (newTerm) => {
     if (newTerm) {
       search(newTerm)
         .then((books) => {
           if (Array.isArray(books)) {
-            books.forEach((book) => {
-              if (book.authors === undefined) {
-                book.authors = "Editors";
-              }
-              if (
-                book.imageLinks === undefined ||
-                book.imageLinks.smallThumbnail === undefined
-              ) {
-                book.imageLinks = {
-                  smallThumbnail:
-                    "https://upload.wikimedia.org/wikipedia/commons/f/f0/Paperback-stack.png",
-                };
-              }
-            });
             this.setState({
               term: newTerm,
               books: books,
@@ -97,14 +81,13 @@ class Search extends React.Component {
 
   render() {
     return (
-      <>
-        <div className="search-books">
-          <div className="search-books-bar">
-            <Link to="/">
-              <button className="close-search">Close</button>
-            </Link>
-            <div className="search-books-input-wrapper">
-              {/*
+      <div className="search-books">
+        <div className="search-books-bar">
+          <Link to="/">
+            <button className="close-search">Close</button>
+          </Link>
+          <div className="search-books-input-wrapper">
+            {/*
           NOTES: The search from BooksAPI is limited to a particular set of search terms.
           You can find these search terms here:
           https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
@@ -112,25 +95,24 @@ class Search extends React.Component {
           However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
           you don't find a specific author or title. Every search is limited by search terms.
         */}
-              <input
-                type="text"
-                placeholder="Search by title or author"
-                onChange={(event) => this.updateQuery(event.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="search-books-results">
-            <BookShelf
-              key={0}
-              category={bookShelfCategories[3]}
-              books={this.state.books}
-              onChange={this.handleAssignmentToMyReads}
-              showShelfChanger={false}
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              onChange={(event) => this.updateQuery(event.target.value)}
             />
           </div>
         </div>
-      </>
+
+        <div className="search-books-results">
+          <BookShelf
+            key={0}
+            category={bookShelfCategories[3]}
+            books={this.state.books}
+            onChange={this.handleAssignmentToMyReads}
+            showShelfChanger={false}
+          />
+        </div>
+      </div>
     );
   }
 }
