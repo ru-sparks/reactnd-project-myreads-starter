@@ -130,11 +130,6 @@ class Search extends React.Component {
             />
           </div>
         </div>
-        <ListBooks
-          showSearchLink={false}
-          books={this.state.serverBooks}
-          onChange={this.handleShelfChange}
-        />
       </>
     );
   }
