@@ -32,15 +32,15 @@ const BookShelf = (props) => {
               <BookShelfChanger
                 key={book.id}
                 bookId={book.id}
-                category={props.category}
+                category={book.shelf === undefined ? 'none' : book.shelf}
                 onChange={props.onChange}
               />
             </div>
             <div className="book-title">{book.title}</div>
             <div className="book-authors">
               {Array.isArray(book.authors)
-                ? book.authors.join(", ")
-                : "Editors"}
+                ? book.authors.join(', ')
+                : ''}
             </div>
           </div>
         </li>

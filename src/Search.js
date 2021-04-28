@@ -4,6 +4,7 @@ import { search, update, getAll } from "./BooksAPI";
 import bookShelfCategories from "./bookShelfCategories";
 import BookShelf from "./BookShelf";
 import cloneDeep from "lodash/cloneDeep";
+import debounce from "lodash/debounce";
 
 class Search extends React.Component {
   state = {
@@ -38,25 +39,21 @@ class Search extends React.Component {
       });
     }
   };
-
-  handleShelfChange = (event) => {
-    let updateBooks = cloneDeep(this.state.serverBooks);
-
-    let book = updateBooks.find((book) => book.id === event.target.id);
-    if (book !== undefined) {
-      book.shelf = event.target.value;
-      update(book, book.shelf);
-      this.setState({
-        serverBooks: updateBooks,
-      });
-    }
-  };
-
-  updateQuery = (newTerm) => {
+  
+  updateQuery = debounce((newTerm) => {
     if (newTerm) {
       search(newTerm)
         .then((books) => {
           if (Array.isArray(books)) {
+          
+            for (let book of books) {
+              let shelvedBook;
+              shelvedBook = this.state.serverBooks.find(b => b.id === book.id);
+              if (shelvedBook !== undefined) {
+                book.shelf = shelvedBook.shelf;
+              }
+            }
+
             this.setState({
               term: newTerm,
               books: books,
@@ -77,7 +74,7 @@ class Search extends React.Component {
         books: [],
       });
     }
-  };
+  }, 500);
 
   render() {
     return (
